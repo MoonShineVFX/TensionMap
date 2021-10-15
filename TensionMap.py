@@ -149,15 +149,22 @@ class TensionMap(om2.MPxNode):
         colorIdsOnFaceVertex = om2.MIntArray()
         colorIdsOnFaceVertex.setLength(numFaceVerts)
 
-        for i in xrange(numFaceVerts):
-            _, vertId = meshFn.getFaceAndVertexIndices(i, localVertex=False)
-            colorIdsOnFaceVertex[i] = vertId
+        # Getting face-vertex id from `meshFn.getFaceAndVertexIndices()`
+        # somehow may hang Maya forever in some cases.
+        # Use `meshFn.getVertices()` instead.
+        #
+        vtx_num_per_poly, ploy_vtx_id = meshFn.getVertices()
+        # assert len(ploy_vtx_id) == numFaceVerts
+
+        for i, colorId in enumerate(ploy_vtx_id):
+            colorIdsOnFaceVertex[i] = colorId
 
         meshFn.setColors(vertColors, "tensionCS")
         meshFn.assignColors(colorIdsOnFaceVertex, "tensionCS")
         return True
 
     def getEdgeLen(self, meshHandle):
+        """Average length of each vertex's connected edges"""
         edgeLenArray = []
         meshObj = meshHandle.asMesh()
         edgeIter = om2.MItMeshEdge(meshObj)
