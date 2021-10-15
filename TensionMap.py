@@ -111,7 +111,7 @@ class TensionMap(om2.MPxNode):
                 vertColors = om2.MColorArray()
                 vertColors.setLength(numVerts)
 
-                for i in xrange(numVerts):
+                for i in range(numVerts):
                     delta = 0.5
                     delta += ((origEdges[i] - defmEdges[i]) / origEdges[i])
 
@@ -132,7 +132,7 @@ class TensionMap(om2.MPxNode):
         vertIds = om2.MIntArray()
         vertIds.setLength(numVerts)
 
-        for i in xrange(numVerts):
+        for i in range(numVerts):
             vertIds[i] = i
 
         meshFn.setVertexColors(vertColors, vertIds)
@@ -166,7 +166,7 @@ class TensionMap(om2.MPxNode):
         while not vertIter.isDone():
             connectedEdges = vertIter.getConnectedEdges()
             lengthSum = 0.0
-            for i in xrange(len(connectedEdges)):
+            for i in range(len(connectedEdges)):
                 edgeIter.setIndex(connectedEdges[i])
                 length = edgeIter.length(om2.MSpace.kWorld)
                 lengthSum += length * 1.0
